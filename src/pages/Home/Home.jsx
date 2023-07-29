@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
 import { HomeDiv, HomeTitle, HomeItem } from './Home.styled';
-
-// const API_KEY = 'ad8ecf745f5bbe50fc648c0859fa1701';
 
 export function Home() {
   const [movies, setMovies] = useState([]);
@@ -32,7 +29,6 @@ export function Home() {
       <HomeTitle>Trending today</HomeTitle>
       <ul>
         {movies.map(movie => {
-          console.log(movie);
           return (
             <li key={movie.id}>
               <HomeItem to={`movies/${movie.id}`}>

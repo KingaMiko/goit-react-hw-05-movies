@@ -16,4 +16,7 @@ export const HomeTitle = styled.h1`
 export const HomeItem = styled(NavLink)`
   color: #e6e6e6;
   margin: 0;
+  &:hover {
+    color: pink;
+  }
 `;
