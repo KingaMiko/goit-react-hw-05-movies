@@ -19,7 +19,7 @@ export function Home() {
     fetch(url, options)
       .then(res => res.json())
       .then(({ results }) => {
-        setMovies(prevResults => results);
+        setMovies(results);
       })
       .catch(err => console.error('error:' + err));
   }, []);
