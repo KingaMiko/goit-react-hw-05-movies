@@ -1,5 +1,6 @@
 import React, { useEffect, useState, Suspense } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
+import Loader from 'components/Loader/Loader';
 import {
   MovieDetailsPage,
   MovieDetailsDiv,
@@ -13,6 +14,7 @@ import { fetchMovies } from 'Api/fetchMovies';
 function MovieDetails() {
   const { movieId } = useParams();
   const [movie, setMovie] = useState('');
+  const [loading, setLoading] = useState(true);
   const url = `https://api.themoviedb.org/3/movie/${movieId}?language=en-US`;
 
   useEffect(() => {
@@ -28,11 +30,18 @@ function MovieDetails() {
       <MovieDetailsPage>
         <GoBackLink to="/">&larr; Go back</GoBackLink>
         <MovieDetailsDiv>
+          {loading && <Loader />}
           <img
             width="200px"
             height="300px"
-            src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
+            src={
+              movie.poster_path
+                ? `https://image.tmdb.org/t/p/original/${movie.poster_path}`
+                : 'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg'
+            }
             alt={movie.title}
+            onLoad={() => setLoading(false)}
+            style={{ display: loading ? 'none' : 'block' }}
           />
           <div>
             <h2>{movie.title}</h2>

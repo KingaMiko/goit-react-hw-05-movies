@@ -37,3 +37,7 @@ export const TrendingName = styled.p`
   white-space: nowrap;
   text-overflow: ellipsis;
 `;
+export const NoMovies = styled.div`
+  color: white;
+  margin: 0;
+`;
