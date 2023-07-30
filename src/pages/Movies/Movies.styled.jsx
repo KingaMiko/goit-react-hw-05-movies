@@ -1,4 +1,3 @@
-import { Searchbar } from 'components/Searchbar/Searchbar';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
