@@ -22,9 +22,15 @@ export const MovieDetailsGenres = styled.div`
 `;
 
 export const MovieDetailsLink = styled(NavLink)`
-  text-decoration: none;
+  display: inline-block;
+  color: #e6e6e6;
   font-size: 14px;
-  color: white;
+  text-decoration: none;
+  background-color: transparent;
+  border: 0.5px solid #e6e6e6;
+  border-radius: 9px;
+  padding: 2px 6px;
+  margin-bottom: 20px;
   &.active {
     color: pink;
   }
@@ -40,4 +46,8 @@ export const GoBackLink = styled(Link)`
   border-radius: 9px;
   padding: 2px 4px;
   margin-bottom: 20px;
+`;
+
+export const StyledUl = styled.ul`
+  list-style: none;
 `;

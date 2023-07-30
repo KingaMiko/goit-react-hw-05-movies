@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchMovies } from 'Api/fetchMovies';
+import { CastList } from './Cast.styled';
 
 function Cast() {
   const { movieId } = useParams();
@@ -16,7 +17,7 @@ function Cast() {
   }, [movieId]);
   return (
     credits && (
-      <ul>
+      <CastList>
         {credits.cast.map(credit => {
           return (
             <li key={credit.id}>
@@ -31,7 +32,7 @@ function Cast() {
             </li>
           );
         })}
-      </ul>
+      </CastList>
     )
   );
 }

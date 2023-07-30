@@ -1,17 +1,29 @@
 import React from 'react';
-import { HomeItem } from './HomeTrendingList.styled';
+import {
+  HomeItem,
+  TrendingImg,
+  TrendingLi,
+  TrendingList,
+  TrendingName,
+} from './HomeTrendingList.styled';
+
 export function HomeTrendingList({ movies }) {
   return (
-    <ul>
+    <TrendingList>
       {movies.map(movie => {
         return (
-          <li key={movie.id}>
+          <TrendingLi key={movie.id}>
             <HomeItem to={`movies/${movie.id}`}>
-              <p>{movie.title}</p>
+              <TrendingImg
+                width="200px"
+                src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
+                alt={movie.title}
+              />
+              <TrendingName>{movie.title}</TrendingName>
             </HomeItem>
-          </li>
+          </TrendingLi>
         );
       })}
-    </ul>
+    </TrendingList>
   );
 }

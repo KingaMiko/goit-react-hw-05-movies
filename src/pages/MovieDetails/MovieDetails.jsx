@@ -6,6 +6,7 @@ import {
   MovieDetailsGenres,
   MovieDetailsLink,
   GoBackLink,
+  StyledUl,
 } from './MovieDetails.styled';
 import { fetchMovies } from 'Api/fetchMovies';
 
@@ -21,12 +22,6 @@ function MovieDetails() {
       })
       .catch(err => console.error('error:' + err));
   }, [url]);
-
-  //const location = useLocation();
-  //const backLinkHref = location.state?.from ?? '/';
-  // {
-  //   backLinkHref;
-  // }
 
   return (
     movie && (
@@ -52,14 +47,14 @@ function MovieDetails() {
             </MovieDetailsGenres>
           </div>
         </MovieDetailsDiv>
-        <ul>
+        <StyledUl>
           <li>
             <MovieDetailsLink to="cast">Cast</MovieDetailsLink>
           </li>
           <li>
             <MovieDetailsLink to="reviews">Reviews</MovieDetailsLink>
           </li>
-        </ul>
+        </StyledUl>
         <Suspense fallback={<div>Loading page...</div>}>
           <Outlet />
         </Suspense>
