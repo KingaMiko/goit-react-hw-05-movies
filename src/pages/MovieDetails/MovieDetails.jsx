@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Outlet, useParams } from 'react-router-dom';
+import { Outlet, useParams, useLocation } from 'react-router-dom';
 import {
   MovieDetailsPage,
   MovieDetailsDiv,
@@ -7,34 +7,28 @@ import {
   MovieDetailsLink,
   GoBackLink,
 } from './MovieDetails.styled';
+import { fetchMovies } from 'Api/fetchMovies';
 
 export function MovieDetails() {
   const { movieId } = useParams();
   const [movie, setMovie] = useState('');
+  const url = `https://api.themoviedb.org/3/movie/${movieId}?language=en-US`;
 
   useEffect(() => {
-    const url = `https://api.themoviedb.org/3/movie/${movieId}?language=en-US`;
-    const options = {
-      method: 'GET',
-      headers: {
-        accept: 'application/json',
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZDhlY2Y3NDVmNWJiZTUwZmM2NDhjMDg1OWZhMTcwMSIsInN1YiI6IjY0ODhjMTU2ZDJiMjA5MDBjYTIxNzA5NyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4vxGV4kBszJbv90PYcnQ1DUyBmnKxmAR_P1khjcXgUk',
-      },
-    };
-
-    fetch(url, options)
-      .then(res => res.json())
+    fetchMovies(url)
       .then(results => {
         setMovie(prevResult => results);
       })
       .catch(err => console.error('error:' + err));
-  }, [movieId]);
+  }, [url]);
+
+  const location = useLocation();
+  const backLinkHref = location.state?.from ?? '/';
 
   return (
     movie && (
       <MovieDetailsPage>
-        <GoBackLink to="/">&larr; Go back</GoBackLink>
+        <GoBackLink to={backLinkHref}>&larr; Go back</GoBackLink>
         <MovieDetailsDiv>
           <img
             width="200px"
@@ -60,9 +54,7 @@ export function MovieDetails() {
             <MovieDetailsLink to="cast">Cast</MovieDetailsLink>
           </li>
           <li>
-            <MovieDetailsLink to="reviews">
-              Go through the reviews
-            </MovieDetailsLink>
+            <MovieDetailsLink to="reviews">Reviews</MovieDetailsLink>
           </li>
         </ul>
         <Outlet />

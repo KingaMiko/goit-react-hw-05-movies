@@ -1,23 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { HomeDiv, HomeTitle, HomeItem } from './Home.styled';
+import { HomeDiv, HomeTitle } from './Home.styled';
+import { HomeTrendingList } from 'components/HomeTrendingList/HomeTrendingList';
+import { fetchMovies } from 'Api/fetchMovies';
+
+const url = 'https://api.themoviedb.org/3/trending/movie/day?language=en-US';
 
 export function Home() {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    const url =
-      'https://api.themoviedb.org/3/trending/movie/day?language=en-US';
-    const options = {
-      method: 'GET',
-      headers: {
-        accept: 'application/json',
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZDhlY2Y3NDVmNWJiZTUwZmM2NDhjMDg1OWZhMTcwMSIsInN1YiI6IjY0ODhjMTU2ZDJiMjA5MDBjYTIxNzA5NyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4vxGV4kBszJbv90PYcnQ1DUyBmnKxmAR_P1khjcXgUk',
-      },
-    };
-
-    fetch(url, options)
-      .then(res => res.json())
+    fetchMovies(url)
       .then(({ results }) => {
         setMovies(results);
       })
@@ -27,17 +19,7 @@ export function Home() {
   return (
     <HomeDiv>
       <HomeTitle>Trending today</HomeTitle>
-      <ul>
-        {movies.map(movie => {
-          return (
-            <li key={movie.id}>
-              <HomeItem to={`movies/${movie.id}`}>
-                <p>{movie.title}</p>
-              </HomeItem>
-            </li>
-          );
-        })}
-      </ul>
+      <HomeTrendingList movies={movies} />
     </HomeDiv>
   );
 }
