@@ -1,6 +1,5 @@
 import React from 'react';
 import { HomeItem } from './HomeTrendingList.styled';
-
 export function HomeTrendingList({ movies }) {
   return (
     <ul>
