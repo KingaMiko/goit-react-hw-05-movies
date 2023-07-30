@@ -38,7 +38,7 @@ export function MovieDetails() {
           />
           <div>
             <h2>{movie.title}</h2>
-            <p>User Scrore: {Math.round(movie.vote_average * 10)}%</p>
+            <p>User Score: {Math.round(movie.vote_average * 10)}%</p>
             <h3>Overview</h3>
             <p>{movie.overview}</p>
             <h3>Genres</h3>
