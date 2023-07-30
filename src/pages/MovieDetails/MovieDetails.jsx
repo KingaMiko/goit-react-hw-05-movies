@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { Outlet, useParams, useLocation } from 'react-router-dom';
 import {
   MovieDetailsPage,
@@ -9,7 +9,7 @@ import {
 } from './MovieDetails.styled';
 import { fetchMovies } from 'Api/fetchMovies';
 
-export function MovieDetails() {
+function MovieDetails() {
   const { movieId } = useParams();
   const [movie, setMovie] = useState('');
   const url = `https://api.themoviedb.org/3/movie/${movieId}?language=en-US`;
@@ -57,8 +57,11 @@ export function MovieDetails() {
             <MovieDetailsLink to="reviews">Reviews</MovieDetailsLink>
           </li>
         </ul>
-        <Outlet />
+        <Suspense fallback={<div>Loading page...</div>}>
+          <Outlet />
+        </Suspense>
       </MovieDetailsPage>
     )
   );
 }
+export default MovieDetails;

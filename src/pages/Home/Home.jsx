@@ -5,7 +5,7 @@ import { fetchMovies } from 'Api/fetchMovies';
 
 const url = 'https://api.themoviedb.org/3/trending/movie/day?language=en-US';
 
-export function Home() {
+function Home() {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
@@ -23,3 +23,4 @@ export function Home() {
     </HomeDiv>
   );
 }
+export default Home;

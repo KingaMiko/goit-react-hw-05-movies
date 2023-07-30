@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-export function Reviews() {
+function Reviews() {
   const { movieId } = useParams();
   const [allReviews, setAllReviews] = useState(null);
 
@@ -43,3 +43,4 @@ export function Reviews() {
     <p>No reviews found.</p>
   );
 }
+export default Reviews;
