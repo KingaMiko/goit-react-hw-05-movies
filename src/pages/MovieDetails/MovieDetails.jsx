@@ -32,7 +32,7 @@ function MovieDetails() {
         <MovieDetailsDiv>
           {loading && <Loader />}
           <img
-            width="200px"
+            width="220px"
             height="300px"
             src={
               movie.poster_path

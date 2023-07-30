@@ -18,7 +18,7 @@ export const TrendingList = styled.ul`
 `;
 
 export const TrendingLi = styled.li`
-  max-width: 200px;
+  max-width: 220px;
 `;
 
 export const TrendingImg = styled.img`

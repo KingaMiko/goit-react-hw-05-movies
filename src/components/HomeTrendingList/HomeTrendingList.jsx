@@ -16,7 +16,7 @@ function MovieItem({ movie }) {
       <HomeItem to={`movies/${movie.id}`}>
         {loading && <Loader />}
         <TrendingImg
-          width="200px"
+          width="220px"
           src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
           alt={movie.title}
           onLoad={() => setLoading(false)}
