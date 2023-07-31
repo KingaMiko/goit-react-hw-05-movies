@@ -47,7 +47,6 @@ function MovieSearchItem({ movie, location }) {
           />
         )}
         <TrendingName>{movie.original_title}</TrendingName>
-        <p>User Scrore: {Math.round(movie.vote_average * 10)}%</p>
       </HomeItem>
     </TrendingLi>
   );
