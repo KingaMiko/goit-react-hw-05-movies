@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Suspense } from 'react';
-import { Outlet, useParams } from 'react-router-dom';
+import { Outlet, useParams, useLocation, useNavigate } from 'react-router-dom';
 import Loader from 'components/Loader/Loader';
 import {
   MovieDetailsPage,
@@ -17,10 +17,20 @@ function MovieDetails() {
   const [loading, setLoading] = useState(true);
   const url = `https://api.themoviedb.org/3/movie/${movieId}?language=en-US`;
 
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleGoBack = () => {
+    if (location.state?.from) {
+      return navigate(location.state.from);
+    }
+    navigate(-1);
+  };
+
   useEffect(() => {
     fetchMovies(url)
       .then(results => {
-        setMovie(prevResult => results);
+        setMovie(results);
       })
       .catch(err => console.error('error:' + err));
   }, [url]);
@@ -28,7 +38,7 @@ function MovieDetails() {
   return (
     movie && (
       <MovieDetailsPage>
-        <GoBackLink to="/">&larr; Go back</GoBackLink>
+        <GoBackLink onClick={handleGoBack}>&larr; Go back</GoBackLink>
         <MovieDetailsDiv>
           {loading && <Loader />}
           <img

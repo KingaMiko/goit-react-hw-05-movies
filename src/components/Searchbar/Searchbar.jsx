@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { SearchbarHeader, SearchForm } from './Searchbar.styled';
 
 export function Searchbar({ setSearchParams }) {
@@ -34,3 +35,7 @@ export function Searchbar({ setSearchParams }) {
     </SearchbarHeader>
   );
 }
+
+Searchbar.propTypes = {
+  setSearchParams: PropTypes.func.isRequired,
+};

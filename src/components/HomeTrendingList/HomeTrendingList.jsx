@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import Loader from 'components/Loader/Loader';
 import {
   HomeItem,
@@ -37,3 +38,21 @@ export function HomeTrendingList({ movies }) {
     </TrendingList>
   );
 }
+
+MovieItem.propTypes = {
+  movie: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    poster_path: PropTypes.string,
+  }).isRequired,
+};
+
+HomeTrendingList.propTypes = {
+  movies: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      title: PropTypes.string.isRequired,
+      poster_path: PropTypes.string,
+    })
+  ).isRequired,
+};

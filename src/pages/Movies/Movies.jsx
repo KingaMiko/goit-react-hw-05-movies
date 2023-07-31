@@ -27,7 +27,9 @@ function MovieSearchItem({ movie, location }) {
 
   return (
     <TrendingLi key={movie.id}>
-      <HomeItem to={`${movie.id}`} state={{ from: location }}>
+      <HomeItem
+        to={{ pathname: `${movie.id}`, state: { from: location.pathname } }}
+      >
         {loading && <Loader />}
         {movie.poster_path ? (
           <TrendingImg
