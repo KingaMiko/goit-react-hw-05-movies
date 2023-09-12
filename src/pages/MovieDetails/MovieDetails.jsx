@@ -1,6 +1,8 @@
 import React, { useEffect, useState, Suspense } from 'react';
-import { Outlet, useParams, useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, Outlet, useParams } from 'react-router-dom';
 import Loader from 'components/Loader/Loader';
+import { useLastLocation } from 'components/Context/LastLocationContext';
+
 import {
   MovieDetailsPage,
   MovieDetailsDiv,
@@ -13,32 +15,44 @@ import { fetchMovies } from 'Api/fetchMovies';
 
 function MovieDetails() {
   const { movieId } = useParams();
-  const [movie, setMovie] = useState('');
+  const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const url = `https://api.themoviedb.org/3/movie/${movieId}?language=en-US`;
+  const [shouldNavigate, setShouldNavigate] = useState(false);
+  const { lastLocation, lastSearchParams } = useLastLocation();
 
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  const handleGoBack = () => {
-    if (location.state?.from) {
-      return navigate(location.state.from);
+  const goBack = () => {
+    let navigateTo = lastLocation ?? '/';
+    if (lastSearchParams) {
+      navigateTo = `${navigateTo}?${lastSearchParams}`;
     }
-    navigate(-1);
+    setShouldNavigate(navigateTo);
   };
 
   useEffect(() => {
-    fetchMovies(url)
-      .then(results => {
+    const fetchData = async () => {
+      try {
+        const results = await fetchMovies(url);
         setMovie(results);
-      })
-      .catch(err => console.error('error:' + err));
+      } catch (err) {
+        setError('Something went wrong.');
+      }
+      setLoading(false);
+    };
+
+    fetchData();
   }, [url]);
+  if (shouldNavigate) {
+    return <Navigate to={shouldNavigate} replace />;
+  }
+  if (loading) return <Loader />;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     movie && (
       <MovieDetailsPage>
-        <GoBackLink onClick={handleGoBack}>&larr; Go back</GoBackLink>
+        <GoBackLink onClick={goBack}>&larr; Go back</GoBackLink>
         <MovieDetailsDiv>
           {loading && <Loader />}
           <img
@@ -81,4 +95,5 @@ function MovieDetails() {
     )
   );
 }
+
 export default MovieDetails;

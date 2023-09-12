@@ -3,6 +3,7 @@ import { useLocation, useSearchParams } from 'react-router-dom';
 import Loader from 'components/Loader/Loader';
 import { fetchMovies } from 'Api/fetchMovies';
 import { Searchbar } from 'components/Searchbar/Searchbar';
+import { useLastLocation } from 'components/Context/LastLocationContext';
 import {
   NoMovies,
   HomeItem,
@@ -12,40 +13,39 @@ import {
   TrendingName,
 } from 'components/HomeTrendingList/HomeTrendingList.styled';
 
-function MovieSearchItem({ movie, location }) {
-  const [loading, setLoading] = useState(true);
+function MovieSearchItem({ movie, searchParams }) {
+  const location = useLocation();
+  const [loading, setLoading] = useState(!!movie.poster_path);
 
-  const handleImageLoad = () => {
-    setLoading(false);
-  };
+  const { setLastLocation } = useLastLocation();
+  setLastLocation(location.pathname);
 
   useEffect(() => {
-    if (!movie.poster_path) {
-      setLoading(false);
-    }
-  }, [movie]);
+    setLastLocation(location.pathname);
+  }, [location.pathname, setLastLocation]);
+
+  const getImageUrl = path => {
+    return path
+      ? `https://image.tmdb.org/t/p/original/${path}`
+      : 'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg';
+  };
 
   return (
     <TrendingLi key={movie.id}>
       <HomeItem
-        to={{ pathname: `${movie.id}`, state: { from: location.pathname } }}
+        to={{
+          pathname: `/movies/${movie.id}`,
+          state: { from: location.pathname, searchParams: searchParams },
+        }}
       >
         {loading && <Loader />}
-        {movie.poster_path ? (
-          <TrendingImg
-            width="200px"
-            src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
-            alt={movie.title}
-            onLoad={handleImageLoad}
-            style={{ display: loading ? 'none' : 'block' }}
-          />
-        ) : (
-          <TrendingImg
-            width="200px"
-            src="https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg"
-            alt={movie.title}
-          />
-        )}
+        <TrendingImg
+          width="200px"
+          src={getImageUrl(movie.poster_path)}
+          alt={movie.title}
+          onLoad={() => setLoading(false)}
+          style={{ display: loading ? 'none' : 'block' }}
+        />
         <TrendingName>{movie.original_title}</TrendingName>
       </HomeItem>
     </TrendingLi>
@@ -53,39 +53,38 @@ function MovieSearchItem({ movie, location }) {
 }
 
 function Movies() {
-  const [movies, setMovies] = useState('');
+  const [movies, setMovies] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
+  //const [lastSearchParams, setLastSearchParams] = useState(null);
   const [searchPerformed, setSearchPerformed] = useState(false);
-
-  const location = useLocation();
+  const { lastSearchParams, setLastSearchParams } = useLastLocation();
 
   useEffect(() => {
     const searchQuery = searchParams.get('query') ?? '';
-    if (searchQuery !== '') {
+    if (searchQuery) {
       setSearchPerformed(true);
+      setLastSearchParams(searchParams.toString());
       const url = `https://api.themoviedb.org/3/search/movie?query=${searchQuery}&include_adult=false&language=en-US&page=1`;
       fetchMovies(url)
-        .then(results => {
-          setMovies(results);
+        .then(data => {
+          setMovies(data.results);
         })
         .catch(err => console.error('error:' + err));
     }
-  }, [searchParams]);
+  }, [searchParams, setLastSearchParams]);
 
   return (
     <>
       <Searchbar setSearchParams={setSearchParams} />
-      {movies && movies.results.length > 0 ? (
+      {movies.length > 0 ? (
         <TrendingList>
-          {movies.results.map(result => {
-            return (
-              <MovieSearchItem
-                key={result.id}
-                movie={result}
-                location={location}
-              />
-            );
-          })}
+          {movies.map(result => (
+            <MovieSearchItem
+              key={result.id}
+              movie={result}
+              searchParams={lastSearchParams}
+            />
+          ))}
         </TrendingList>
       ) : (
         searchPerformed && <NoMovies>No movies found</NoMovies>

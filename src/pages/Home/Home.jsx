@@ -7,14 +7,27 @@ const url = 'https://api.themoviedb.org/3/trending/movie/day?language=en-US';
 
 function Home() {
   const [movies, setMovies] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchMovies(url)
-      .then(({ results }) => {
+    const fetchData = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const { results } = await fetchMovies(url);
         setMovies(results);
-      })
-      .catch(err => console.error('error:' + err));
+      } catch (err) {
+        setError('Something went wrong.');
+      }
+      setLoading(false);
+    };
+
+    fetchData();
   }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <HomeDiv>
@@ -23,4 +36,5 @@ function Home() {
     </HomeDiv>
   );
 }
+
 export default Home;

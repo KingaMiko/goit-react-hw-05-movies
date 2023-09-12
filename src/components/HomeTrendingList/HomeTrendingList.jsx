@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { memo, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Loader from 'components/Loader/Loader';
+import { useLastLocation } from '../Context/LastLocationContext';
+
 import {
   HomeItem,
   TrendingImg,
@@ -9,12 +12,22 @@ import {
   TrendingName,
 } from './HomeTrendingList.styled';
 
-function MovieItem({ movie }) {
-  const [loading, setLoading] = useState(true);
+const MovieItem = memo(function MovieItem({ movie }) {
+  const [loading, setLoading] = React.useState(true);
+  const location = useLocation();
+  const { setLastLocation } = useLastLocation();
+  useEffect(() => {
+    setLastLocation(location.pathname);
+  }, [location.pathname, setLastLocation]);
 
   return (
-    <TrendingLi key={movie.id}>
-      <HomeItem to={`movies/${movie.id}`}>
+    <TrendingLi>
+      <HomeItem
+        to={{
+          pathname: `/movies/${movie.id}`,
+          state: { from: location.pathname },
+        }}
+      >
         {loading && <Loader />}
         <TrendingImg
           width="220px"
@@ -27,7 +40,7 @@ function MovieItem({ movie }) {
       </HomeItem>
     </TrendingLi>
   );
-}
+});
 
 export function HomeTrendingList({ movies }) {
   return (
