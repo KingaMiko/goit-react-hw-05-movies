@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Loader from 'components/Loader/Loader';
-import { IMAGE_BASE_URL, PLACEHOLDER_URL } from 'api/fetchMovies';
+import { IMAGE_BASE_URL, PLACEHOLDER_URL } from 'api/fetch';
 import {
   HomeItem,
   TrendingImg,

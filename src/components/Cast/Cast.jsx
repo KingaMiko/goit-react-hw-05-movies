@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import {
-  fetchMovieCredits,
-  IMAGE_BASE_URL,
-  PLACEHOLDER_URL,
-} from 'api/fetchMovies';
+import { fetchMovieCredits, IMAGE_BASE_URL, PLACEHOLDER_URL } from 'api/fetch';
 import { CastList, ListItem } from './Cast.styled';
 import { createTmdbImageUrl } from 'helpers/createTmdbImageUrl';
 

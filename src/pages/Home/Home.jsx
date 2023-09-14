@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { HomeDiv, HomeTitle } from './Home.styled';
 import { HomeTrendingList } from 'components/HomeTrendingList/HomeTrendingList';
-import { fetchTrendingMovies } from 'api/fetchMovies';
+import { fetchTrendingMovies } from 'api/fetch';
 
 function Home() {
   const [movies, setMovies] = useState([]);

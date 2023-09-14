@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Loader from 'components/Loader/Loader';
 import { useLastLocation } from '../Context/LastLocationContext';
-import { IMAGE_BASE_URL } from 'api/fetchMovies';
+import { IMAGE_BASE_URL } from 'api/fetch';
 
 import {
   HomeItem,

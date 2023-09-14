@@ -10,11 +10,7 @@ import {
   GoBackLink,
   StyledUl,
 } from './MovieDetails.styled';
-import {
-  fetchMovieDetails,
-  IMAGE_BASE_URL,
-  PLACEHOLDER_URL,
-} from 'api/fetchMovies';
+import { fetchMovieDetails, IMAGE_BASE_URL, PLACEHOLDER_URL } from 'api/fetch';
 import { createTmdbImageUrl } from 'helpers/createTmdbImageUrl';
 
 function MovieDetails() {
