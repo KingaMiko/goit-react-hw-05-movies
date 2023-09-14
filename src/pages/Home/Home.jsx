@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { HomeDiv, HomeTitle } from './Home.styled';
 import { HomeTrendingList } from 'components/HomeTrendingList/HomeTrendingList';
-import { fetchMovies } from 'Api/fetchMovies';
-
-const url = 'https://api.themoviedb.org/3/trending/movie/day?language=en-US';
+import { fetchTrendingMovies } from 'api/fetchMovies';
 
 function Home() {
   const [movies, setMovies] = useState([]);
@@ -15,7 +13,7 @@ function Home() {
       setLoading(true);
       setError(null);
       try {
-        const { results } = await fetchMovies(url);
+        const { results } = await fetchTrendingMovies();
         setMovies(results);
       } catch (err) {
         setError('Something went wrong.');

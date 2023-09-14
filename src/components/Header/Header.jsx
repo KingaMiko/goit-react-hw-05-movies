@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  HeaderTag,
-  HeaderNavList,
-  StyledLink,
-} from 'components/Header/Header.styled';
+import { HeaderTag, HeaderNavList, StyledLink } from './Header.styled';
 
 export function Header() {
   return (

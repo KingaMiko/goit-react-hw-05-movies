@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchMovies } from 'Api/fetchMovies';
+import { fetchMovieReviews } from 'api/fetchMovies';
 
 function Reviews() {
   const { movieId } = useParams();
@@ -8,11 +8,9 @@ function Reviews() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const url = `https://api.themoviedb.org/3/movie/${movieId}/reviews?language=en-US&page=1`;
-
-    fetchMovies(url)
-      .then(results => {
-        setAllReviews(results);
+    fetchMovieReviews(movieId)
+      .then(data => {
+        setAllReviews(data);
       })
       .catch(err => {
         console.error('error:', err);

@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Loader from 'components/Loader/Loader';
 import { useLastLocation } from '../Context/LastLocationContext';
+import { IMAGE_BASE_URL } from 'api/fetchMovies';
 
 import {
   HomeItem,
@@ -31,7 +32,7 @@ const MovieItem = memo(function MovieItem({ movie }) {
         {loading && <Loader />}
         <TrendingImg
           width="220px"
-          src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
+          src={`${IMAGE_BASE_URL}${movie.poster_path}`}
           alt={movie.title}
           onLoad={() => setLoading(false)}
           style={{ display: loading ? 'none' : 'block' }}

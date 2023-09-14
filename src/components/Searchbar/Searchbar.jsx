@@ -18,7 +18,7 @@ export function Searchbar({ setSearchParams }) {
   return (
     <SearchbarHeader>
       <SearchForm onSubmit={handleSubmit} className="form">
-        <button type="submit" className="button">
+        <button className="button">
           <span className="button-label">&#128269;</span>
         </button>
 

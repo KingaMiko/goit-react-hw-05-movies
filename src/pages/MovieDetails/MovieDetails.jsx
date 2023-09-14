@@ -2,7 +2,6 @@ import React, { useEffect, useState, Suspense } from 'react';
 import { Navigate, Outlet, useParams } from 'react-router-dom';
 import Loader from 'components/Loader/Loader';
 import { useLastLocation } from 'components/Context/LastLocationContext';
-
 import {
   MovieDetailsPage,
   MovieDetailsDiv,
@@ -11,14 +10,18 @@ import {
   GoBackLink,
   StyledUl,
 } from './MovieDetails.styled';
-import { fetchMovies } from 'Api/fetchMovies';
+import {
+  fetchMovieDetails,
+  IMAGE_BASE_URL,
+  PLACEHOLDER_URL,
+} from 'api/fetchMovies';
+import { createTmdbImageUrl } from 'helpers/createTmdbImageUrl';
 
 function MovieDetails() {
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const url = `https://api.themoviedb.org/3/movie/${movieId}?language=en-US`;
   const [shouldNavigate, setShouldNavigate] = useState(false);
   const { lastLocation, lastSearchParams } = useLastLocation();
 
@@ -31,52 +34,45 @@ function MovieDetails() {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const results = await fetchMovies(url);
-        setMovie(results);
-      } catch (err) {
+    fetchMovieDetails(movieId)
+      .then(data => {
+        setMovie(data);
+        setLoading(false);
+      })
+      .catch(err => {
         setError('Something went wrong.');
-      }
-      setLoading(false);
-    };
+        setLoading(false);
+      });
+  }, [movieId]);
 
-    fetchData();
-  }, [url]);
   if (shouldNavigate) {
     return <Navigate to={shouldNavigate} replace />;
   }
   if (loading) return <Loader />;
   if (error) return <p>Error: {error}</p>;
 
+  const imgUrl = createTmdbImageUrl(
+    movie.poster_path,
+    IMAGE_BASE_URL,
+    PLACEHOLDER_URL
+  );
+
   return (
     movie && (
       <MovieDetailsPage>
         <GoBackLink onClick={goBack}>&larr; Go back</GoBackLink>
         <MovieDetailsDiv>
-          {loading && <Loader />}
-          <img
-            width="220px"
-            height="300px"
-            src={
-              movie.poster_path
-                ? `https://image.tmdb.org/t/p/original/${movie.poster_path}`
-                : 'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg'
-            }
-            alt={movie.title}
-            onLoad={() => setLoading(false)}
-            style={{ display: loading ? 'none' : 'block' }}
-          />
+          <img width="220px" height="300px" src={imgUrl} alt={movie.title} />
           <div>
-            <h2>{movie.title}</h2>
+            <h1>{movie.title}</h1>
             <p>User Score: {Math.round(movie.vote_average * 10)}%</p>
             <h3>Overview</h3>
             <p>{movie.overview}</p>
             <h3>Genres</h3>
             <MovieDetailsGenres>
-              {movie.genres.map(genr => {
-                return <p key={genr.id}>{genr.name}</p>;
-              })}
+              {movie.genres.map(genre => (
+                <p key={genre.id}>{genre.name}</p>
+              ))}
             </MovieDetailsGenres>
           </div>
         </MovieDetailsDiv>
