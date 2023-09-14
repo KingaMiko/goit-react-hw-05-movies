@@ -58,7 +58,7 @@ export const fetchMovieSearch = async query => {
     });
 
     if (response.status !== 200) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error(`HTTP error!! status: ${response.status}`);
     }
     return response.data;
   } catch (error) {
