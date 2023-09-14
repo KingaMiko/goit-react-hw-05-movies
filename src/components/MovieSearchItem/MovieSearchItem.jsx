@@ -9,15 +9,13 @@ import {
   TrendingLi,
   TrendingName,
 } from 'components/HomeTrendingList/HomeTrendingList.styled';
-import { useLastLocation } from 'components/Context/LastLocationContext';
 import { createTmdbImageUrl } from 'helpers/createTmdbImageUrl';
+import { useLastLocation } from 'components/Context/LastLocationContext';
 
 function MovieSearchItem({ movie, searchParams }) {
   const location = useLocation();
   const [loading, setLoading] = useState(!!movie.poster_path);
-
   const { setLastLocation } = useLastLocation();
-  setLastLocation(location.pathname);
 
   useEffect(() => {
     setLastLocation(location.pathname);
